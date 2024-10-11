@@ -1,19 +1,18 @@
-version: '3.8'
+version: "3.8"
+
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/dev_db
     volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm run dev # For hot reloading during development
-    depends_on:
-      - db
+      - .:/app:cashed        # Bind mount the code to the container
+      - /app/node_modules  # Prevent node_modules conflicts
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
+    command: npm run dev
 
   db:
     image: postgres:14
