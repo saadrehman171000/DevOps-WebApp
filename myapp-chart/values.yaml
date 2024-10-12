@@ -1,0 +1,46 @@
+replicaCount: 1
+
+image:
+  repository: saadrehman17100/myapp-image
+  tag: latest
+  pullPolicy: Always
+
+serviceAccount:
+  create: true
+  name: ""  # Helm will generate a name if left empty
+
+podAnnotations: {}
+
+podLabels: {}
+
+securityContext: {}
+containerSecurityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80  # This is the external port (ingress) that users will hit
+
+ingress:
+  enabled: true
+  className: "nginx"  # Ensure this matches your ingress controller class
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: myapp.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []  # If you want HTTPS, you can configure TLS certificates
+
+resources: {}
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

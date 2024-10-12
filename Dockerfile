@@ -1,14 +1,23 @@
-# Development stage
-FROM node:18 AS dev
+# Use an official Node.js image as the base image
+FROM node:18
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Copy package.json and package-lock.json (or yarn.lock) first to install dependencies
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Expose the port
+# Copy the rest of the application code to the container
+COPY . .
+
+# Build the Next.js app
+RUN npm run build
+
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Enable hot reloading in development mode
-CMD ["npm", "run", "dev"]
+# Command to start the app
+CMD ["npm", "start"]
