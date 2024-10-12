@@ -23,7 +23,7 @@ spec:
               service:
                 name: {{ include "myapp-chart.fullname" $ }}
                 port:
-                  number: 3000  # Set this port to match your application's port
+                  number: 3000
           {{- end }}
     {{- end }}
 {{- end }}
