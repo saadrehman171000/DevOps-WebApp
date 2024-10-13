@@ -1,4 +1,4 @@
-# apiVersion: v2
+# Changed apiVersion to v1 for compatibility with current Kubernetes version
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -14,6 +14,7 @@ spec:
   hostPath:
     path: "/mnt/data/mongo"
 ---
+# PersistentVolumeClaim for MongoDB storage
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
