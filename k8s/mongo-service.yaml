@@ -5,8 +5,9 @@ metadata:
 spec:
   selector:
     app: mongo
-    # app: postgreSQL
   ports:
-    - port: 27017
+    - protocol: TCP
+      port: 27017
       targetPort: 27017
-  type: ClusterIP
+      nodePort: 30017 # You can choose a port between 30000-32767
+  type: NodePort

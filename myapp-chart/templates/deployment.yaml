@@ -1,26 +1,42 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: myapp
+  name: mongo
 spec:
+  serviceName: "mongo"
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: myapp
+      app: mongo
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: myapp
+        app: mongo
     spec:
       containers:
-        - name: myapp
-          image: saadrehman17100/myapp:latest
+        - name: mongo
+          image: mongo:latest
           ports:
-            - containerPort: 3000
-          resources: # Optional, you can add resource limits
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
-            requests:
-              cpu: "250m"
-              memory: "256Mi"
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret     # Name of the secret
+                  key: mongo-root-username  # Key in the secret
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret     # Name of the secret
+                  key: mongo-root-password  # Key in the secret
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-persistent-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
