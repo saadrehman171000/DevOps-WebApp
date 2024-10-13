@@ -3,8 +3,15 @@ kind: Service
 metadata:
   name: myapp
 spec:
-  ports:
-    - port: 80
-      targetPort: 3000
   selector:
     app.kubernetes.io/name: myapp
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80  # External port
+      targetPort: 3000  # Internal app port
+    - name: app-port
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP

@@ -23,7 +23,7 @@ spec:
               service:
                 name: {{ include "myapp-chart.fullname" $ }}
                 port:
-                  number: 3000
+                  number: {{ .port | default $.Values.service.port }}
           {{- end }}
     {{- end }}
 {{- end }}
