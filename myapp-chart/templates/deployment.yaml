@@ -1,42 +1,42 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: mongo  # StatefulSet name for MongoDB
 spec:
-  serviceName: "mongo"
-  replicas: 1
+  serviceName: "mongo"  # Name of the service associated with this StatefulSet
+  replicas: 1  # Number of MongoDB replicas
   selector:
     matchLabels:
-      app: mongo
+      app: mongo  # Label selector for pods
   template:
     metadata:
       labels:
-        app: mongo
+        app: mongo  # Labels for the pods
     spec:
       containers:
-        - name: mongo
-          image: mongo:latest
+        - name: mongo  # Container name
+          image: mongo:latest  # MongoDB Docker image
           ports:
-            - containerPort: 27017
+            - containerPort: 27017  # MongoDB port
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret     # Name of the secret
+                  name: mongodb-secret     # Refers to secret for the root username
                   key: mongo-root-username  # Key in the secret
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret     # Name of the secret
+                  name: mongodb-secret     # Refers to secret for the root password
                   key: mongo-root-password  # Key in the secret
           volumeMounts:
-            - name: mongo-persistent-storage
-              mountPath: /data/db
+            - name: mongo-persistent-storage  # Mount persistent storage
+              mountPath: /data/db  # Path inside the container for MongoDB data
   volumeClaimTemplates:
     - metadata:
-        name: mongo-persistent-storage
+        name: mongo-persistent-storage  # Name of the persistent volume claim
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes: ["ReadWriteOnce"]  # Access mode for the volume
         resources:
           requests:
-            storage: 1Gi
+            storage: 1Gi  # Requested storage size for MongoDB data
