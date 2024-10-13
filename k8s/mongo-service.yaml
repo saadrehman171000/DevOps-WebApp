@@ -9,5 +9,5 @@ spec:
     - protocol: TCP
       port: 27017
       targetPort: 27017
-      nodePort: 30017 # You can choose a port between 30000-32767
+      nodePort: 30017 
   type: NodePort
