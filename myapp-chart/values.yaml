@@ -1,46 +1,48 @@
+# Number of replicas for the application
 replicaCount: 1
 
 image:
-  repository: saadrehman17100/myapp-image
-  tag: latest
-  pullPolicy: Always
+  repository: saadrehman17100/myapp-image  # Docker image for the application
+  tag: latest  # Image tag
+  pullPolicy: Always  # Always pull the latest image
 
 serviceAccount:
-  create: true
-  name: myapp-sa
+  create: true  # Creates a new service account
+  name: myapp-sa  # Name of the service account
 
-podAnnotations: {}
+podAnnotations: {}  # Annotations for the pods
 
-podLabels: {}
+podLabels: {}  # Labels for the pods
 
-securityContext: {}
-containerSecurityContext: {}
+securityContext: {}  # Pod security context
+containerSecurityContext: {}  # Container security context
 
 service:
-  type: ClusterIP
+  type: ClusterIP  # Internal service type to expose within the cluster
   port: 3000  # This is the external port (ingress) that users will hit
 
 ingress:
-  enabled: true
-  className: "nginx"
+  enabled: true  # Enable Ingress for external access
+  className: "nginx"  # Ingress controller class
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
-    - host: myapp.local
+    - host: myapp.local  # Host for the application
       paths:
-        - path: /
+        - path: /  # Path that Ingress will route
           pathType: Prefix
-  tls: []
+  tls: []  # TLS configuration, left empty for now
 
-resources: {}
+resources: {}  # Resource limits and requests for the pods
+
 autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+  enabled: false  # Autoscaling disabled for now
+  minReplicas: 1  # Minimum number of replicas
+  maxReplicas: 100  # Maximum number of replicas
+  targetCPUUtilizationPercentage: 80  # Autoscale based on 80% CPU utilization
 
-nodeSelector: {}
+nodeSelector: {}  # Node selection configuration, left empty
 
-tolerations: []
+tolerations: []  # Tolerations for scheduling, left empty
 
-affinity: {}
+affinity: {}  # Affinity rules for pod placement, left empty
