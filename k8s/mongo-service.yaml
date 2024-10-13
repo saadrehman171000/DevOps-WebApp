@@ -5,6 +5,7 @@ metadata:
 spec:
   selector:
     app: mongo
+    # app: postgreSQL
   ports:
     - port: 27017
       targetPort: 27017
